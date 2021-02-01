@@ -84,10 +84,14 @@ namespace WindowsForms
             SetChildWindowText(proc.MainWindowHandle, "Chils process #" + (++Counter));
             /*проверяем, запускали ли мы экземпляр такого приложения
              * и, елси нет, то добавляем в список запущенных приложений*/
-            if (!StartedAssemblies.Items.Contains(proc.ProcessName))
-                StartedAssemblies.Items.Add(proc.ProcessName);
+            StartedAssemblies.Invoke((Action)delegate () {
+                if (!StartedAssemblies.Items.Contains(proc.ProcessName))
+                    StartedAssemblies.Items.Add(proc.ProcessName);
+            });
             /*убираем приложение из списка лдоступных приложений*/
-            AvailableAssemblies.Items.Remove(AvailableAssemblies.SelectedItem);
+            AvailableAssemblies.Invoke((Action)delegate () {
+                AvailableAssemblies.Items.Remove(AvailableAssemblies.SelectedItem);
+            });
         }
 
 
@@ -179,9 +183,12 @@ namespace WindowsForms
         /*обработчик события нажания на кнопку Close основного диалога*/
         private void CloseWindowButton_Click(object sender, EventArgs e)
         {
-            ExecuteOnProcessesByName(StartedAssemblies.SelectedItem.ToString(),
-            CloseMainWindow);
-            StartedAssemblies.Items.Remove(StartedAssemblies.SelectedItem);
+            string temp = null;
+            StartedAssemblies.Invoke((Action)delegate () { temp = StartedAssemblies.SelectedItem.ToString(); });
+            ExecuteOnProcessesByName(temp, CloseMainWindow);
+            StartedAssemblies.Invoke((Action)delegate () {
+                StartedAssemblies.Items.Remove(StartedAssemblies.SelectedItem);
+            });
         }
         void Refresh(Process proc)
         {
@@ -190,10 +197,13 @@ namespace WindowsForms
         /*обработчик события нажания на кнопку Refresh основного диалога*/
         private void Refresh_Click(object sender, EventArgs e)
         {
-            ExecuteOnProcessesByName(StartedAssemblies.SelectedItem.ToString(), Refresh);
+            string temp = null;
+            StartedAssemblies.Invoke((Action)delegate () { temp = StartedAssemblies.SelectedItem.ToString(); });
+            ExecuteOnProcessesByName(temp, Refresh);
         }
+
         /*обработчик события изменения индекса выделенного элемента
-         *в списке доступных приложений*/
+*в списке доступных приложений*/
         private void AvailableAssemblies_SelectedIndexChanged(object sender, EventArgs
         e)
         {

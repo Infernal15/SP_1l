@@ -50,6 +50,7 @@
             // 
             // RefreshButton
             // 
+            this.RefreshButton.Enabled = false;
             this.RefreshButton.Location = new System.Drawing.Point(327, 210);
             this.RefreshButton.Name = "RefreshButton";
             this.RefreshButton.Size = new System.Drawing.Size(157, 31);
@@ -60,6 +61,7 @@
             // 
             // CloseButton
             // 
+            this.CloseButton.Enabled = false;
             this.CloseButton.Location = new System.Drawing.Point(327, 155);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(157, 31);
